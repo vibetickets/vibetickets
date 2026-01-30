@@ -1,38 +1,32 @@
 <div align="center">
 
-<img src="https://hievents-public.s3.us-west-1.amazonaws.com/website/github-banner.png?v=1" alt="Hi.Events - Open Source Event Ticketing Platform" width="100%">
+<img src="https://hievents-public.s3.us-west-1.amazonaws.com/website/github-banner.png?v=1" alt="VibeTickets - Cloudflare Workers Distribution of Hi.Events" width="100%">
 
-# Hi.Events
+# VibeTickets
 
-### Open-source event ticketing and management platform
+### Cloudflare Workers distribution of Hi.Events
 
 Sell tickets online for conferences, nightlife events, concerts, club nights, workshops, and festivals.  
-Self-hosted or cloud. Your events, your brand, your data.
+Self-hosted backend with Cloudflare Workers frontend. Your events, your brand, your data.
 
-[Try Cloud →](https://app.hi.events/auth/register?utm_source=gh-readme) · [Live Demo](https://app.hi.events/event/2/hievents-conference-2030?utm_source=gh-readme) · [Documentation](https://hi.events/docs?utm_source=gh-readme) · [Website](https://hi.events?utm_source=gh-readme)
+[Live Demo](https://tickets.vibetickets.tech) · [Documentation](https://hi.events/docs) · [Upstream Project](https://github.com/HiEventsDev/hi.events)
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://github.com/HiEventsDev/Hi.Events/blob/develop/LICENCE)
-[![GitHub Release](https://img.shields.io/github/v/release/HiEventsDev/hi.events?include_prereleases)](https://github.com/HiEventsDev/hi.events/releases)
-[![Run Unit Tests](https://github.com/HiEventsDev/hi.events/actions/workflows/unit-tests.yml/badge.svg?event=push)](https://github.com/HiEventsDev/hi.events/actions/workflows/unit-tests.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/daveearley/hi.events-all-in-one)](https://hub.docker.com/r/daveearley/hi.events-all-in-one)
-
-<a href="https://trendshift.io/repositories/10563" target="_blank">
-  <img src="https://trendshift.io/api/badge/repositories/10563" alt="HiEventsDev%2Fhi.events | Trendshift" width="250" height="55"/>
-</a>
-
-<p>
-<a href="README.de.md">Deutsch</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.it.md">Italiano</a> · <a href="README.nl.md">Nederlands</a> · <a href="README.es.md">Español</a> · <a href="README.zh-cn.md">中文</a> · <a href="README.zh-hk.md">繁體中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.vi.md">Tiếng Việt</a> · <a href="README.tr.md">Türkçe</a> · <a href="README.hu.md">Magyar</a> · <a href="README.pl.md">Polski</a>
-</p>
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://github.com/vibetickets/vibetickets/blob/develop/LICENCE)
+[![GitHub Release](https://img.shields.io/github/v/release/vibetickets/vibetickets?include_prereleases)](https://github.com/vibetickets/vibetickets/releases)
+[![Fork Status](https://img.shields.io/badge/Fork-Hi.Events-success)](https://github.com/HiEventsDev/hi.events)
+[![Cloudflare Workers](https://img.shields.io/badge/Frontend-Cloudflare%20Workers-orange)](https://workers.cloudflare.com/)
 
 </div>
 
 <br>
 
-## Why Hi.Events?
+## Why VibeTickets?
 
 Most ticketing platforms charge per-ticket fees and lock your data into their ecosystem. **Hi.Events is a modern,
 open-source alternative to Eventbrite, Tickettailor, Dice.fm, and other ticketing platforms** for organizers who want
 full control over branding, checkout, data, and infrastructure.
+
+**VibeTickets** is a community distribution of Hi.Events optimized for **Cloudflare Workers** frontend deployment. We maintain full compatibility with upstream Hi.Events while adding edge deployment capabilities. All improvements to core functionality are contributed back to the original project.
 
 Built for nightlife promoters, festival organizers, venues, community groups, and conference hosts.
 
@@ -126,18 +120,32 @@ Automatic invoicing · Event archive · Multi-language support · Full REST API
 
 ## Quick Start
 
-### One-Click Deploy
+### Cloudflare Workers (Frontend)
 
-[![Deploy on DigitalOcean](https://www.deploytodo.com/do-btn-blue.svg)](https://github.com/HiEventsDev/hi.events-digitalocean)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://github.com/HiEventsDev/hi.events-render.com)
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/8CGKmu?referralCode=KvSr11)
-[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://zeabur.com/templates/8DIRY6)
-
-### Docker
+Deploy the frontend to Cloudflare Workers for edge caching:
 
 ```bash
-git clone git@github.com:HiEventsDev/hi.events.git
-cd hi.events/docker/all-in-one
+git clone git@github.com:vibetickets/vibetickets.git
+cd vibetickets/frontend
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+# Edit: VITE_API_URL_CLIENT, VITE_API_URL_SERVER, VITE_FRONTEND_URL, VITE_STRIPE_PUBLISHABLE_KEY
+# Optional: VITE_APP_PRIMARY_COLOR, VITE_APP_SECONDARY_COLOR
+
+# Build and deploy
+npm run build:worker
+npx wrangler deploy
+```
+
+### Docker (Backend)
+
+```bash
+git clone git@github.com:vibetickets/vibetickets.git
+cd vibetickets/docker/backend
 
 # Generate keys (Linux/macOS)
 echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
@@ -146,56 +154,99 @@ echo "JWT_SECRET=$(openssl rand -base64 32)" >> .env
 docker compose up -d
 ```
 
-> [!TIP]
-> **Windows users:** See `./docker/all-in-one/README.md` for key generation instructions.
-
 Open `http://localhost:8123` and create your account.
 
-📖 [Full installation guide](https://hi.events/docs/getting-started?utm_source=gh-readme)
+📖 [Full installation guide](https://hi.events/docs/getting-started)
 
 <br>
 
-## Hi.Events Cloud
+## Branding Assets
 
-Prefer not to self-host? **[Hi.Events Cloud](https://app.hi.events/auth/register?utm_source=gh-readme)** is a fully
-managed option with zero setup, automatic updates, and managed infrastructure.
+To customize the frontend with your own branding, replace the following assets in `frontend/public/` while keeping the original filenames:
 
-[Get started →](https://app.hi.events/auth/register?utm_source=gh-readme)
+### Logo Files
+```
+logos/
+├── hi-events-horizontal-dark.svg
+├── hi-events-horizontal-light.svg
+├── hi-events-icon-dark.svg
+├── hi-events-icon-light.svg
+├── hi-events-logo-preview.html
+├── hi-events-stacked-dark.svg
+├── hi-events-stacked-light.png
+├── hi-events-stacked-light.svg
+├── hi-events-text-dark.svg
+└── hi-events-text-light.svg
+```
+
+### Favicon and Icons
+```
+manifest-icons/
+├── apple-touch-icon.png
+├── favicon-16x16.png
+├── favicon-192x192.png
+├── favicon-32x32.png
+├── favicon-48x48.png
+├── favicon-512x512.png
+├── favicon.ico
+├── favicon-light-48x48.png
+├── favicon-light.svg
+├── favicon.svg
+└── favicon-text-dot.svg
+favicon.ico
+```
+
+### Environment Variables
+Add your brand colors to the frontend `.env`:
+```env
+VITE_APP_PRIMARY_COLOR="#c9ff1f"
+VITE_APP_SECONDARY_COLOR="#B61FFF"
+```
 
 <br>
 
 ## Contributing
 
-We welcome contributions. See the [contributing guide](CONTRIBUTING.md) for details.
+We are active contributors to Hi.Events. This fork maintains a pristine `upstream-develop` branch for contributing back to the original project.
+
+To contribute to Hi.Events:
+1. Branch from `upstream-develop` (tracks Hi.Events/develop)
+2. Follow [Hi.Events Contributing Guidelines](https://github.com/HiEventsDev/hi.events/blob/develop/CONTRIBUTING.md)
+3. Sign the CLA: `I have read the CLA Document and I hereby sign the CLA`
+4. PR to `HiEventsDev/hi.events:develop`
+
+For VibeTickets-specific issues (Cloudflare Workers deployment):
+1. Branch from `develop`
+2. Submit PR to this repository
 
 <br>
 
 ## Support
 
-📖 [Documentation](https://hi.events/docs?utm_source=gh-readme) · 📧 [hello@hi.events](mailto:hello@hi.events) ·
-🐛 [GitHub Issues](https://github.com/HiEventsDev/hi.events/issues)
+📖 [Documentation](https://hi.events/docs) · 📧 [hello@hi.events](mailto:hello@hi.events) ·
+🐛 [GitHub Issues](https://github.com/vibetickets/vibetickets/issues)
 
 <br>
 
 ## Changelog
 
 Stay updated with new features and improvements on
-the [releases page](https://github.com/HiEventsDev/hi.events/releases).
+the [releases page](https://github.com/vibetickets/vibetickets/releases).
 
 <br>
 
 ## License
 
-Hi.Events is licensed under **AGPL-3.0 with additional terms**. Commercial licensing
-available. [Learn more](https://hi.events/licensing).
+VibeTickets is a derivative work of [Hi.Events](https://github.com/HiEventsDev/hi.events), licensed under **AGPL-3.0**.
+
+[View Full License](https://github.com/vibetickets/vibetickets/blob/develop/LICENCE)
 
 <br>
 
 <div align="center">
 
-**[Website](https://hi.events)** · **[Documentation](https://hi.events/docs)** · *
-*[Twitter/X](https://x.com/HiEventsTickets)**
+**[Website](https://hi.events)** · **[Documentation](https://hi.events/docs)** · **[Upstream Project](https://github.com/HiEventsDev/hi.events)**
 
-Made with ☘️ in Ireland
+Made with ☘️ in Ireland · Deployed on the Edge
 
 </div>
